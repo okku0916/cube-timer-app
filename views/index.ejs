@@ -1,0 +1,35 @@
+<!-- index.ejs -->
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ルービックキューブタイマー</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h1>Cube Timer</h1>
+ここにスクランブル
+0.123
+
+<p>
+  スペースキーでインスペクション開始<br>
+  もう一度スペースキーを押して計測スタート / 任意のキーでストップ
+</p>
+
+<div class="history">
+  <h2>最近の記録</h2>
+  <ul id="solve-history">
+  </ul>
+</div>
+
+<input type="text" class="input-text" />
+<input type="text" class="input-scramble" />
+<button class="send-button">送信</button>
+
+<script src="/static/js/scramble.js"></script>
+<script src="/static/js/timer.js"></script>
+</body>
+
+</html>
