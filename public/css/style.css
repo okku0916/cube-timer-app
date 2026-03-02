@@ -1,0 +1,46 @@
+body {
+    text-align: center;
+    /* 画面全体を中央揃え */
+    background-color: #f9f6f4;
+    color: #333;
+}
+
+#title {
+    text-align: left;
+}
+
+#scramble {
+    font-size: 3rem;
+}
+
+#timer-display {
+    font-size: 10rem;
+}
+
+#best-time {
+    font-size: 1.5rem;
+}
+
+.history {
+    margin-top: 50px;
+}
+
+#solve-history {
+    max-width: 850px;
+    margin: 0 auto;
+    list-style: none; /* ・を消す */
+}
+
+#solve-history li {
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 少し影をつける */
+    font-size: 1.2rem;
+    text-align: left;
+}
+
+/* マウスを乗せると赤くする */
+#solve-history li:hover {
+    background-color: #fff0f0;
+}

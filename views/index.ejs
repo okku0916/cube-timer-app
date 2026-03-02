@@ -9,14 +9,27 @@
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-<h1>Cube Timer</h1>
-ここにスクランブル
-0.123
+
+<div id="title">
+  <h1>Cube Timer</h1>
+</div>
+
+<div id="scramble">
+  ここにスクランブル
+</div>
+
+<div id="timer-display">
+  0.00
+</div>
 
 <p>
   スペースキーでインスペクション開始<br>
-  もう一度スペースキーを押して計測スタート / 任意のキーでストップ
+  スペースキーを長押し、離して計測スタート / 任意のキーでストップ
 </p>
+
+<div id="best-time">
+  ベストタイム: ---
+</div>
 
 <div class="history">
   <h2>最近の記録</h2>
@@ -24,10 +37,7 @@
   </ul>
 </div>
 
-<input type="text" class="input-text" />
-<input type="text" class="input-scramble" />
-<button class="send-button">送信</button>
-
+<script src="/static/js/api.js"></script>
 <script src="/static/js/scramble.js"></script>
 <script src="/static/js/timer.js"></script>
 </body>
