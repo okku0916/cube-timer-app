@@ -3,7 +3,7 @@ const app = express();
 const path = require('node:path');
 const { MongoClient, ObjectId } = require('mongodb');
 const client = new MongoClient('mongodb://localhost:27017');
-const { getSolves, getSolveById, insertSolves, getBestSolve } = require('./models/solveModels.js');
+const { getSolves, getSolveById, insertSolves, deleteSolve, getBestSolve } = require('./models/solveModels.js');
 
 app.set('view engine', 'ejs');
 // publicディレクトリ以下のファイルを静的ファイルとして配信
@@ -48,14 +48,18 @@ async function main() {
         // idでDBから削除する
         app.delete('/api/times/:id', async (req, res) => {
                 const id = req.params.id;
-                const { status, body } = await insertSolves(db, id);
+                const { status, body } = await deleteSolve(db, id);
                 res.status(status).send(body);
         });
 
         // ベストタイムを取得する
         app.get('/api/best', async (req, res) => {
                 const { status, body } = await getBestSolve(db);
-                res.status(status).send(body);
+                if (status == 200) {
+                        res.status(status).json(body);
+                } else {
+                        res.status(status).send(body);
+                }
         });
 
         app.listen(3000, () => {

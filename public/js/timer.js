@@ -17,7 +17,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     // クリックしたら削除されるようにする
     document.querySelectorAll('#solve-history').forEach((elem) => {
         elem.addEventListener('click', async (event) => {
-            deleteTime(event);
+            if (event.target.tagName === 'LI') {
+                deleteTime(event);
+            }
         });
     });
 });

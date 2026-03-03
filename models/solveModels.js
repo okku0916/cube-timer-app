@@ -28,7 +28,7 @@ async function insertSolves(db, time, scramble) {
         if (!scramble) {
             return { status: 400, body: 'Bad Request' }
         }
-        await db.collection('solves').insertOne({ time: time, scramble: scramble });
+        await db.collection('solves').insertOne({ time: parseFloat(time), scramble: scramble });
         return { status: 200, body: 'Created' }
     } catch (err) {
         console.error(err);
@@ -39,7 +39,7 @@ async function insertSolves(db, time, scramble) {
 async function deleteSolve(db, id) {
     try {
         const result = await db.collection('solves').deleteOne({ _id: new ObjectId(id) })
-        if (!result) {
+        if (result.deletedCount === 0) {
             return { status: 404, body: 'Not Found' }
         }
         return { status: 200, body: 'Deleted' }
