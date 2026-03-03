@@ -57,8 +57,13 @@ async function deleteTime(event) {
 // データベースからベストタイムを取得する
 async function getBestTime() {
     try {
-        const response = await fetch('api/best', { method: 'GET' });
+        const response = await fetch('/api/best', { method: 'GET' });
         const time = await response.json();
+
+        if (!response.ok) {
+            console.error('サーバーエラー');
+            return;
+        }
 
         // const bestDisplay = document.querySelector('#best-time');
         const bestDisplay = document.getElementById('best-time');
