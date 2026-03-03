@@ -3,6 +3,7 @@ const app = express();
 const path = require('node:path');
 const { MongoClient, ObjectId } = require('mongodb');
 const client = new MongoClient('mongodb://localhost:27017');
+const { getSolves, getSolveById, insertSolves, getBestSolve } = require('./models/solveModels.js');
 
 app.set('view engine', 'ejs');
 // publicディレクトリ以下のファイルを静的ファイルとして配信
@@ -20,86 +21,41 @@ async function main() {
 
         // メインページ
         app.get('/', async (req, res) => {
-                try {
-                        res.render(path.join(__dirname, 'views', 'index.ejs'));
-                } catch (err) {
-                        console.error(err);
-                        res.status(500).send('Internal Server Error');
-                }
+                res.render(path.join(__dirname, 'views', 'index.ejs'));
         });
 
         // 履歴を最新順にとってくる
         app.get('/api/times', async (req, res) => {
-                try {
-                        const times = await db.collection('solves').find().sort({ _id: -1 }).toArray(); // 最新順にソートする必要がある
-                        res.status(200).json(times);
-                } catch (err) {
-                        console.error(err);
-                        res.status(500).send('Get Error');
-                }
+                const { status, body } = await getSolves(db);
+                res.status(status).send(body);
         });
 
         // 履歴をidからとってくる
         app.get('/api/times/:id', async (req, res) => {
-                try {
-                        const id = req.params.id;
-                        const times = await db.collection('solves').findOne({ _id: new ObjectId(id)});
-                        res.status(200).json(times);
-                } catch (err) {
-                        console.error(err);
-                        res.status(500).send('Get Error');
-                }
+                const id = req.params.id;
+                const { status, body } = await getSolveById(db, id);
+                res.status(status).send(body);
         });
 
         // DBを更新する
         app.post('/api/times', express.json(), async (req, res) => {
-                try {
-                        const time = req.body.time;
-                        const scramble = req.body.scramble;
-                        if (!time) {
-                                res.status(400).send('Bad Request');
-                                return;
-                        }
-                        if (!scramble) {
-                                res.status(400).send('Bad Request');
-                                return ;
-                        }
-                        await db.collection('solves').insertOne({ time: time, scramble: scramble});
-                        res.status(200).send('Appended');
-                } catch (err) {
-                        console.error(err);
-                        res.status(500).send('Post Error');
-                }
+                const time = req.body.time;
+                const scramble = req.body.scramble;
+                const { status, body } = await insertSolves(db, time, scramble);
+                res.status(status).send(body);
         });
 
         // idでDBから削除する
         app.delete('/api/times/:id', async (req, res) => {
-                try {
-                        const id = req.params.id;
-                        const result = await db.collection('solves').deleteOne({ _id: new ObjectId(id)})
-                        if (!result) {
-                                return res.status(404).send('Not Found');
-                        }
-                        res.status(200).send('Deleted');
-                } catch (err) {
-                        console.error(err);
-                        res.status(500).send('Delete Error');
-                }
+                const id = req.params.id;
+                const { status, body } = await insertSolves(db, id);
+                res.status(status).send(body);
         });
 
         // ベストタイムを取得する
         app.get('/api/best', async (req, res) => {
-                try {
-                        const best = await db.collection('solves').find().sort({ time : 1 }).limit(1).toArray();
-                        if (best.length > 0) {
-                                res.status(200).json(best[0]);
-                        } else {
-                                res.status(200).json(null);
-                        }
-                } catch (err) {
-                        console.error(err);
-                        res.status(500).send('Get Error');
-                }
+                const { status, body } = await getBestSolve(db);
+                res.status(status).send(body);
         });
 
         app.listen(3000, () => {
